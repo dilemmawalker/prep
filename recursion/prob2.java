@@ -239,7 +239,7 @@ public class prob2{
         }
         return count;
     }
-    
+
     public static int coinChangePermutationOneCoin(int[]coins, int tar, String ans){
         if(tar==0){
             System.out.println(ans);
@@ -258,6 +258,7 @@ public class prob2{
             coins[i]=value;
             }
         }
+        
         return count;
     }
 
