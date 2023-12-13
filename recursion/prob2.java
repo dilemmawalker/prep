@@ -239,7 +239,6 @@ public class prob2{
         }
         return count;
     }
-
     public static int coinChangePermutationOneCoin(int[]coins, int tar, String ans){
         if(tar==0){
             System.out.println(ans);
@@ -258,7 +257,47 @@ public class prob2{
             coins[i]=value;
             }
         }
-        
+        return count;
+    }
+
+    public static int threeQueenCombination(int[]place, int index, String ans, int queensPlaced){
+        if(queensPlaced==3){
+            System.out.println(ans);
+            return 1;
+        }
+
+        int count=0;
+        for(int i=index; i<place.length; i++){
+            count+= threeQueenCombination(place, i+1, ans+"B"+i+"Q"+queensPlaced+" ", queensPlaced+1);
+        }
+        return count;
+    }
+    public static int threeQueenPermutation(int[]place, String ans, int queensPlaced){
+        if(queensPlaced==3){
+            System.out.println(ans);
+            return 1;
+        }
+
+        int count=0;
+        for(int i=0; i<place.length; i++){
+            if(place[i]!=-1){
+                place[i]=-1;
+                count+= threeQueenPermutation(place, ans+"B"+i+"Q"+queensPlaced+" ", queensPlaced+1);
+                place[i]=0;
+            }
+        }
+        return count;
+    }
+    public static int threeQueenCombination2D(int[][]place, int index, String ans, int queensPlaced){
+        if(queensPlaced==3){
+            System.out.println(ans);
+            return 1;
+        }
+
+        int count=0;
+        for(int i=index; i<place.length*place[0].length; i++){
+            count+= threeQueenCombination2D(place, i+1, ans+"R"+(i/place.length)+"C"+(i%place.length)+"Q"+queensPlaced+" ", queensPlaced+1);
+        }
         return count;
     }
 
@@ -297,7 +336,12 @@ public class prob2{
         // int res= coinChangePermutationInfinite(coins, 10, "");
         // int res= coinChangeCombinationInfinite(coins, 10, "", 0);
         // int res= coinChangeCombinationOneCoin(coins, 10, "", 0);
-        int res= coinChangePermutationOneCoin(coins, 10, "");
+        // int res= coinChangePermutationOneCoin(coins, 10, "");
+        // int[] place=new int[5];
+        // int res= threeQueenCombination(place, 0, "", 0);
+        // int res= threeQueenPermutation(place,"", 0);
+        int[][]place=new int[5][5];
+        int res= threeQueenCombination2D(place, 0, "", 0);
         System.out.println(res);
     }
 }
