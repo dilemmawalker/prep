@@ -30,6 +30,24 @@ public class prob3{                 //bits
         }
         return count;
     }
+    public static boolean isPowerOfFour(int n){
+        if(n<=0)
+        return false;
+        int lsb=(n&(-n));
+        int count= countZeros(n);
+        if(((~lsb)&n)==0 && ((count&1)==0))
+        return true;
+        else
+        return false;
+    }
+    public static int countZeros(int n){
+        int count=0;
+        while(n!=1){
+            count++;
+            n=n>>1;
+        }
+        return count;
+    }
     public static void main(String[]args){
         int num=7,k=4;
     //    int ans= onOnOffOn(num,k);
