@@ -41,7 +41,7 @@ public class prob3{                 //bits
         return false;
     }
     public static int countZeros(int n){
-        int count=0;
+        int count=0; 
         while(n!=1){
             count++;
             n=n>>1;
