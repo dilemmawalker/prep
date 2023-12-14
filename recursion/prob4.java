@@ -180,6 +180,7 @@ public class prob4{
                     d[row-col+arr.length-1]=0;
                     ad[row+col]=0;
                 }
+                
         }
         count+=nQueenShadowBetterSubsequenceBetter(arr, queens, ans, indexRow+1, r, c, d, ad); //queen is not placed.
         return count;
