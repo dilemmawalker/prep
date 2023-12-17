@@ -1,4 +1,7 @@
 import java.util.Arrays;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.HashMap;
 public class prob4{
 
 
@@ -255,6 +258,102 @@ public class prob4{
         return false;
     }
 
+    public static boolean wordBreak(String s, List<String> wordDict, int index) {
+        if(s.length()==0){
+            return true;
+        }
+
+        if(index>s.length())
+        return false;
+
+        // System.out.println(s.length());
+
+        boolean flag=false;
+        String temp= s.substring(0,index);
+        System.out.println(temp+" index:"+index);
+        if(checkSubstringInDictionary(temp, wordDict)){
+            flag= flag || wordBreak(s.substring(index), wordDict, 1);
+        }
+        flag= flag || wordBreak(s, wordDict, index+1);
+
+        return flag;
+    }
+    public static boolean checkSubstringInDictionary(String str, List<String> wordDict){
+        for(String s: wordDict){
+            if(s.equals(str))
+            return true;
+        }
+        return false;
+    }
+
+    public static boolean cryptarithmetic(String str1, String str2, String str3, String unique, int index, HashMap<Character,Integer>map, int[]used){
+        if(index==unique.length()){
+            if(checkSumCryptarithmetic(str1, str2, str3, map)){
+            printFunction(unique, map);
+            return true;
+            }
+            else
+            return false;
+        }
+        if(index>=unique.length())
+        return false;
+
+        boolean flag= false;
+        char ch= unique.charAt(index);
+        for(int i=0;i<10;i++){
+                if(used[i]==0){
+                    used[i]=1;
+                    map.put(ch,i);
+                    flag= flag || cryptarithmetic(str1, str2, str3, unique, index+1, map, used);
+                    map.remove(ch);
+                    used[i]=0;
+                }
+                
+        }
+        return flag;
+    }
+    public static boolean checkSumCryptarithmetic(String str1, String str2, String str3, HashMap<Character,Integer>map){
+        long no1=0, no2=0, no3=0;
+        no1= convertStringToNo(str1,map);
+        no2= convertStringToNo(str2,map);
+        no3= convertStringToNo(str3,map);
+
+        if((no1+no2)==no3)
+        return true;
+        return false;
+    }
+    public static long convertStringToNo(String str, HashMap<Character, Integer> map){
+        long no=0;
+        long conversion=1;
+        for(int i=0;i<str.length();i++){
+            char ch= str.charAt(i);
+            no=no*conversion + map.get(ch);
+            conversion*=10;
+        }
+        return no;
+    }
+    public static void printFunction(String unique, HashMap<Character,Integer>map){
+        for(int i=0;i<unique.length();i++){
+            char ch=unique.charAt(i);
+            System.out.print(ch+" : "+map.get(ch)+"  ");
+        }
+    }
+    public static String uniqueString(String str1, String str2, String str3){
+        String s=str1+str2+str3;
+        int[]arr=new int[26];
+        for(int i=0;i<s.length();i++){
+            char ch= s.charAt(i);
+            arr[ch-'a']++;
+        }
+        String unique="";
+        for(int i=0;i<26;i++){
+            int val= arr[i];
+            if(val!=0)
+            unique+=(char)(97+i);
+        }
+        return unique;
+    }
+
 
     public static void main(String[]args){
         int queens= 4;
@@ -276,7 +375,23 @@ public class prob4{
                 count++;
             }
         }
-        boolean call= sudoku(arr, 0, new int[9],  new int[9], new int[9], count);
+        // boolean call= sudoku(arr, 0, new int[9],  new int[9], new int[9], count);
         // System.out.println(ans);
+
+        List<String>wordDict= new ArrayList<>();
+        wordDict.add("cat");
+         wordDict.add("cats");
+          wordDict.add("and");
+           wordDict.add("dog");
+            wordDict.add("dogs");
+             wordDict.add("og");
+        // List<String>wordDict={"cats","dog","sand","and","cat"};
+        // boolean res= wordBreak("catsanddog", wordDict, 0);
+        HashMap<Character, Integer>map=new HashMap<>();
+        String str1= "send"; String str2= "more"; String str3= "money";
+        String unique= uniqueString(str1, str2, str3);
+        System.out.println(unique);
+        boolean res= cryptarithmetic(str1, str2, str3, unique, 0, map, new int[10]);
+        System.out.println(res);
     }
 }
