@@ -308,7 +308,7 @@ public class prob4{
                     map.remove(ch);
                     used[i]=0;
                 }
-                
+
         }
         return flag;
     }
@@ -353,6 +353,27 @@ public class prob4{
         }
         return unique;
     }
+    public static void laxigraphicalOrder(int s, int e){
+        if(s>e)
+        return;
+
+        System.out.println(s);
+        for(int i=0;i<10;i++){
+            int no= s*10 + i;
+            if(no<e){
+                laxigraphicalOrder(no, e);
+            }
+            else break;
+        }
+
+        //this call is for other starting no.s like 2, 3, 4, ... 9
+        //not necessary that recursion has to be called from one function only, can be called from same function itself.
+        if(s<10)
+        laxigraphicalOrder(s+1, e);
+    }
+
+    //leetcode 1079 
+    
 
 
     public static void main(String[]args){
@@ -389,9 +410,10 @@ public class prob4{
         // boolean res= wordBreak("catsanddog", wordDict, 0);
         HashMap<Character, Integer>map=new HashMap<>();
         String str1= "send"; String str2= "more"; String str3= "money";
-        String unique= uniqueString(str1, str2, str3);
-        System.out.println(unique);
-        boolean res= cryptarithmetic(str1, str2, str3, unique, 0, map, new int[10]);
-        System.out.println(res);
+        // String unique= uniqueString(str1, str2, str3);
+        // System.out.println(unique);
+        // boolean res= cryptarithmetic(str1, str2, str3, unique, 0, map, new int[10]);
+        // System.out.println(res);
+        laxigraphicalOrder(1, 1000);
     }
 }
