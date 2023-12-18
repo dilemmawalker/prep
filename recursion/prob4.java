@@ -373,7 +373,59 @@ public class prob4{
     }
 
     //leetcode 1079 
-    
+    public static int numTilePossibilities(String tiles, int index, String ans){
+        if(index==tiles.length()){
+            return 0;
+        }
+
+        int count=0;
+        int[]arr=new int[26];
+        for(int i=0;i<tiles.length();i++){
+            char ch= tiles.charAt(i);
+            int no= ch-'A';
+            if(arr[no]==0){
+                arr[no]=1;
+                count+=numTilePossibilities(tiles.substring(0,i)+tiles.substring(i+1), index, ans+ch) + 1;
+                // arr[no]=0;
+            }
+        }
+        return count;
+    }
+    public static long factorial(int no){
+        if(no==0)
+        return 1;
+
+        long ans=1;
+        for(int i=1;i<=no;i++){
+            ans*=i;
+        }
+        return ans;
+    }
+
+    public static List<String> generateParenthesis(int n, int open, int close) {
+        if(open==n && close==n){
+            List<String>base=new ArrayList<>();
+            base.add("");
+            return base;
+        }
+
+        List<String>ans=new ArrayList<>();
+        List<String>tempAnsOpen=new ArrayList<>();
+        List<String>tempAnsClose=new ArrayList<>();
+        if(open+1<=n){
+            tempAnsOpen= generateParenthesis(n, open+1, close);
+        }
+        if(close<open){
+            tempAnsClose= generateParenthesis(n, open, close+1);
+        }
+        for(String s: tempAnsOpen){
+            ans.add("("+s);
+        }
+        for(String s: tempAnsClose){
+            ans.add(")"+s);
+        }
+        return ans;
+    }
 
 
     public static void main(String[]args){
@@ -414,6 +466,9 @@ public class prob4{
         // System.out.println(unique);
         // boolean res= cryptarithmetic(str1, str2, str3, unique, 0, map, new int[10]);
         // System.out.println(res);
-        laxigraphicalOrder(1, 1000);
+        // laxigraphicalOrder(1, 1000);
+        // int res= numTilePossibilities("AAB",0,"");
+        List<String> res= generateParenthesis(3,0,0);
+        System.out.println(res);
     }
 }
