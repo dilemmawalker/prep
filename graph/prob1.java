@@ -398,12 +398,53 @@ public class prob1{
             level++;
         }
     }
+    
+    public static class vertexColor{
+        int vertex=-1;
+        int color=0;
+        vertexColor(int vertex, int color){
+            this.vertex= vertex;
+            this.color= color;
+        }
+    }
+
+    public static boolean Bipartite(){
+
+        LinkedList<vertexColor> queue= new LinkedList<>();
+        int[]vis= new int[graph.length];
+        vertexColor[] ans=new vertexColor[graph.length];
+
+        int level=0;
+        queue.add(new vertexColor(0, 1));
+
+        while(queue.size()!=0){
+            int size=queue.size();
+            level++;
+            while(size-->0){
+                vertexColor current= queue.removeFirst();
+                ans[current.vertex]= current;
+                vis[current.vertex]= 1;
+                for(Edge e: graph[current.vertex]){
+                    int cvertex= e.v;
+                    if(vis[cvertex]==0){
+                        // vis[cvertex]=1;
+                        if(ans[cvertex]!=null && ans[cvertex].color!=0){
+                            if(ans[cvertex].color!=(current.color==1?2:1))
+                            return false;
+                        }
+                        queue.add(new vertexColor(cvertex,current.color==1?2:1));
+                    }
+                }
+            }
+        }
+        return true;
+    }
 
 
     public static void main(String[]args){
         constructGraph();
         removeEdge(2,5);
-        // removeEdge(3,4);
+        removeEdge(3,4);
         // removeVertex(3);
         // displayGraph(); 
         // display values= new display();
@@ -431,11 +472,13 @@ public class prob1{
         // System.out.println(res);
         // print2DArray(board);
         // BFS(0, new int[graph.length], 6);
-        int[][]arr=new int[4][4];
-        arr[0]=new int[]{1000000, -1, 0, 1000000};
-        arr[1]= new int[]{1000000, 1000000, 1000000, -1};
-        arr[2]= new int[]{1000000, -1, 1000000, -1};
-        arr[3]= new int[]{0, -1, 1000000, 1000000};
-        wallsAndGates(arr);
+        // int[][]arr=new int[4][4];
+        // arr[0]=new int[]{1000000, -1, 0, 1000000};
+        // arr[1]= new int[]{1000000, 1000000, 1000000, -1};
+        // arr[2]= new int[]{1000000, -1, 1000000, -1};
+        // arr[3]= new int[]{0, -1, 1000000, 1000000};
+        // wallsAndGates(arr);
+        boolean res= Bipartite();
+        System.out.println(res);
     }
 }
