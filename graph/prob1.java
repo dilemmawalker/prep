@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.LinkedList;
 
 public class prob1{
     public static ArrayList<Edge>[]graph;
@@ -279,11 +280,130 @@ public class prob1{
         }
     }
 
+    public static class path{
+        int vertex=0;
+        String route="";
+        path(int vertex, String route){
+            this.vertex= vertex;
+            this.route= route;
+        }
+    }
+
+    public static void BFS(int vertex, int[]vis, int dest){
+        LinkedList<path> queue= new LinkedList<>();
+        queue.addLast(new path(vertex,vertex+""));
+        int level=0;
+        while(queue.size()!=0){ //overall
+            int size=queue.size();
+            while(size-->0){ //level wise.
+                path cvtx= queue.removeFirst();
+                // System.out.println("removed vertex: "+ cvtx.vertex);
+                // System.out.println("removed route: "+ cvtx.route);
+
+                if(cvtx.vertex==dest)
+                System.out.println("destination: "+cvtx.route);
+
+                if(vis[cvtx.vertex]==1){
+                    System.out.println("cycle: "+ cvtx.route);
+                    continue;
+                }
+
+                vis[cvtx.vertex]=1;
+
+
+                for(Edge e: graph[cvtx.vertex]){
+                    if(vis[e.v]==0){
+                        // vis[e.v]=1;
+                        // System.out.print("printing: "+ e.v);
+                        queue.addLast(new path(e.v, cvtx.route+""+e.v));
+                        // System.out.println("    route: "+ cvtx.route+""+e.v);
+                    }
+                }
+            }
+            level++;
+        }
+        System.out.println("levels total: "+level);
+    }
+
+    public static void wallsAndGates(int[][]arr){
+        ArrayList<Integer>index= new ArrayList<>();
+
+        for(int row=0;row<arr.length;row++){
+            for(int col=0;col<arr[0].length;col++){
+                // System.out.println("row: "+row + "   col: "+col);
+                if(arr[row][col]==0)
+                index.add(row*arr[0].length + col); //contains all the gates.
+            }
+        }
+
+        DFSWallsAndGates(arr, index, new int[arr.length][arr[0].length]);
+        //already mark true the 2 vertices before this call.
+
+        for(int row=0;row<arr.length;row++){
+            for(int col=0;col<arr[0].length;col++){
+                System.out.print(arr[row][col]+"  ");
+            }
+            System.out.println();
+        }
+    }
+    
+    public static class indexDistance{
+        int row=0;
+        int col=0;
+        int distance=0;
+        indexDistance(int row, int col, int distance){
+            this.row=row;
+            this.col=col;
+            this.distance=distance;
+        }
+    }
+
+    public static void DFSWallsAndGates(int[][]arr, ArrayList<Integer>index, int[][]vis){
+        int level=1;
+        LinkedList<indexDistance> queue= new LinkedList<>();
+        int[][]dir=new int[4][2];
+        dir[0]=new int[]{0,-1};
+        dir[1]=new int[]{0,1};
+        dir[2]=new int[]{-1,0};
+        dir[3]=new int[]{1,0};
+
+        for(int value: index){
+            int row= value/arr[0].length;
+            int col= value%arr[0].length;
+            // System.out.println("row: "+row + "    col: "+col);
+            queue.addLast(new indexDistance(row,col,0));
+            // System.out.println("queue: "+queue.getFirst().row+",   " + queue.getFirst().col +".   +" + queue.getFirst().distance);
+        }
+
+        while(queue.size()!=0){
+            int size=queue.size();
+            while(size-->0){
+                indexDistance value= queue.removeFirst();
+                int row= value.row;
+                int col= value.col;
+                int distance= value.distance;
+
+                vis[row][col]=1;
+                arr[row][col]=distance;
+
+                for(int i=0;i<4;i++){
+                    int nrow= row+dir[i][0];
+                    int ncol= col+dir[i][1];
+                    if(nrow>=0 && ncol>=0 && nrow<arr.length && ncol<arr[0].length && vis[nrow][ncol]==0 && arr[nrow][ncol]==1000000){
+                        vis[nrow][ncol]=1;
+                        queue.addLast(new indexDistance(nrow,ncol,level));
+                    }
+                }
+            }
+            level++;
+        }
+    }
+
 
     public static void main(String[]args){
         constructGraph();
         removeEdge(2,5);
-        removeEdge(3,4);
+        // removeEdge(3,4);
         // removeVertex(3);
         // displayGraph(); 
         // display values= new display();
@@ -307,8 +427,15 @@ public class prob1{
         // board[1]=new char[]{'X','X'};
         // board[2]=new char[]{'X','X'};
         // board[3]=new char[]{'X','X'};
-        int res= getConnectedComponents();
-        System.out.println(res);
+        // int res= getConnectedComponents();
+        // System.out.println(res);
         // print2DArray(board);
+        // BFS(0, new int[graph.length], 6);
+        int[][]arr=new int[4][4];
+        arr[0]=new int[]{1000000, -1, 0, 1000000};
+        arr[1]= new int[]{1000000, 1000000, 1000000, -1};
+        arr[2]= new int[]{1000000, -1, 1000000, -1};
+        arr[3]= new int[]{0, -1, 1000000, 1000000};
+        wallsAndGates(arr);
     }
 }
