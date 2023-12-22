@@ -193,6 +193,74 @@ public class prob2{
         return level;
     }
 
+    //leetcode 815:  Bus Routes
+
+    public int numBusesToDestination(int[][] routes, int source, int target) {
+        HashMap<Integer,ArrayList<Integer>>map= new HashMap<>();
+
+        for(int i=0;i<routes.length;i++){
+            for(int ele: routes[i]){
+                if(map.containsKey(ele)){
+                    ArrayList<Integer>temp=map.get(ele);
+                    temp.add(i);
+                    map.put(ele, temp);
+                }
+                else{
+                    ArrayList<Integer>temp= new ArrayList<>();
+                    temp.add(i);
+                    map.put(ele,temp);
+                }
+            }
+        }
+
+        HashSet<Integer>stand= new HashSet<>();
+        int[]route=new int[routes.length];
+        int level=0;
+
+        LinkedList<Integer>queue= new LinkedList<>();
+        queue.addLast(source);
+        int finalAns=-1;
+
+
+        if(map.get(source)==null){
+            if(source==target)
+            return 0;
+            else
+            return -1;
+        }
+
+        while(queue.size()!=0){
+            int size=queue.size();
+            while(size-->0){
+                int ele= queue.removeFirst();
+                // System.out.println("removed element: "+ ele);
+                if(finalAns==-1 && ele==target)
+                finalAns=level;
+                ArrayList<Integer> possibleRoutes= map.get(ele);
+                System.out.println("possibleRoutes: "+ possibleRoutes);
+
+                for(int i=0;i<possibleRoutes.size();i++){
+                    int e= possibleRoutes.get(i);
+                    // System.out.println("checking: "+ possibleRoutes);
+                    if(route[e]==1)
+                    continue;
+
+                    route[e]=1;
+                    for(int val: routes[e]){
+                        if(!stand.contains(val)){
+                            // System.out.println("getting added: "+ val);
+                            stand.add(val);
+                            queue.addLast(val);
+                            
+                        }
+                    }
+                }
+            }
+            level++;
+        }
+        return finalAns==-1?-1:finalAns;
+    }
+
     public static void main(String[]args){
         constructGraph();
         displayGraph();
