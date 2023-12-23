@@ -107,8 +107,59 @@ public class prob3{
     }
 
     //leetcode 547: Number of Provinces
+    public int findCircleNum(int[][] isConnected) {
+        int maxVertices= isConnected.length;
+        size= new int[maxVertices];
+        parent= new int[maxVertices];
 
-    
+        for(int i=0;i<maxVertices;i++){
+            size[i]=1;
+            parent[i]=i;
+        }
+
+        for(int i=0;i<maxVertices;i++){
+            int vertex1= i;
+            for(int j=i+1;j<isConnected[i].length;j++){
+
+                int vertex2= j;
+                if(isConnected[i][j]==0 || i==j)
+                continue;
+
+                int p1= findParent(vertex1);
+                int p2= findParent(vertex2);
+                System.out.println("vertices:  "+i+"  " +j);
+                mergeSet(p1,p2);
+            }
+        }
+        for(int i=0;i<maxVertices;i++){
+            findParent(i);
+        }
+        int ans=0;
+        for(int i=0;i<size.length;i++){
+            if(parent[i]==i)
+            ans++;
+        }
+
+        return ans;
+    }
+    public int findParent(int vertex){
+        if(parent[vertex]==vertex)
+        return vertex;
+
+        return parent[vertex]=findParent(parent[vertex]);
+    }
+    public void mergeSet(int s1, int s2){
+        System.out.println("size of set 1: "+size[s1]+ "    size of set 2: "+size[s2]);
+        if(size[s1]>=size[s2]){
+            size[s1]+=size[s2];
+            parent[s2]=s1;
+        }
+        else{
+            size[s2]+=size[s1];
+            parent[s1]=s2;
+        }
+    }
+
 
     public static void main(String[]args){
         construct();
