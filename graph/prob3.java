@@ -212,7 +212,7 @@ public class prob3{
 
     // 200. Number of Islands by Union Find
 
-    int[][]size;
+ /*   int[][]size;
     int[][]parent;
     public int numIslands(char[][] grid) {
         size=new int[grid.length][grid[0].length];
@@ -280,7 +280,7 @@ public class prob3{
             parent[s1/m][s1%m]=s2;
             System.out.println("mergeSet: "+s2);
         }
-    }
+    }*/
 
 
     //839. Similar String Groups
