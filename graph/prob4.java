@@ -186,6 +186,90 @@ public class prob4{
         return parent[v]=Parent(parent[v], parent);
     }
 
+    //mr. president haackerearth 
+
+    public static mrPresident() {
+        /* Sample code to perform I/O:
+         * Use either of these methods for input
+
+        //BufferedReader
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        String name = br.readLine();                // Reading input from STDIN
+        System.out.println("Hi, " + name + ".");    // Writing output to STDOUT
+
+        //Scanner*/
+        Scanner s = new Scanner(System.in);
+        int n = s.nextInt();                 // Reading input from STDIN
+        // System.out.println("Hi, " + name + ".");    // Writing output to STDOUT
+        int m= s.nextInt();
+        int k= s.nextInt();
+
+        // Write your code here
+        ArrayList<ArrayList<Integer>>input= new ArrayList<ArrayList<Integer>>();
+
+        for(int i=0;i<m;i++){
+            int a=s.nextInt();
+            int b=s.nextInt();
+            int c=s.nextInt();
+
+            ArrayList<Integer>temp= new ArrayList<>();
+            temp.add(a);temp.add(b);temp.add(c);
+            input.add(temp);
+        }
+
+        Collections.sort(input, (ArrayList<Integer> a, ArrayList<Integer> b)->{
+            return a.get(2)-b.get(2);
+        });
+
+        int[]parent=new int[n+1];
+
+        for(int i=0;i<parent.length;i++){
+            parent[i]=i;
+        }
+
+        int ans=0, count=0;
+        for(int i=0;i<m;i++){
+            int a= input.get(i).get(0);
+            int b= input.get(i).get(1);
+            int wt= input.get(i).get(2);
+
+            int p1= findParent(a, parent);
+            int p2= findParent(b, parent);
+
+            if(p1!=p2){
+                parent[p1]=Math.min(p1,p2);
+                parent[p2]=Math.min(p1,p2);
+                ans+=wt;
+                if(ans>k){
+                    count++;
+                }
+            }
+        }
+
+        // for(int i=0;i<=n;i++){
+        //     int a= i;
+        //     ArrayList<
+        //     int b= input.get(i).get(0);
+        // }
+        System.out.print(count);
+    }
+    public static int findParent(int v, int[]parent){
+        if(parent[v]==v)
+        return v;
+
+        return parent[v]=findParent(parent[v],parent);
+    }
+    public static class Edge{
+        int v1=0;
+        int v2=0;
+        int w=0;
+        Edge(int v1, int v2, int w){
+            this.v1=v1;
+            this.v2=v2;
+            this.w=w;
+        }
+    }
+
     public static void main(String[]args){
         ArrayList<ArrayList<Integer>>arr= new ArrayList<ArrayList<Integer>>();
         constructarr(arr);
