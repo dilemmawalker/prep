@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.LinkedList;
 
 public class prob1{
 
@@ -171,6 +172,121 @@ public class prob1{
         return Math.max(left,right)+1; //return height
     }
 
+    //View =============================================
+
+    public static void leftView(Node root){
+        if(root==null)
+        return;
+
+        LinkedList<Node>queue= new LinkedList<>();
+        queue.add(root);
+        while(queue.size()!=0){
+            int size=queue.size();
+            Node temp= queue.getFirst();
+            System.out.println(temp.data);
+            while(size-->0){
+                Node t= queue.removeFirst();
+
+                if(t.left!=null)
+                queue.addLast(t.left);
+                if(t.right!=null)
+                queue.addLast(t.right);
+            }
+        }
+    }
+
+    public static void rightView(Node root){
+        if(root==null)
+        return;
+
+        LinkedList<Node>queue= new LinkedList<>();
+        queue.add(root);
+        while(queue.size()!=0){
+            int size=queue.size();
+            Node temp= queue.getLast();
+            System.out.println(temp.data);
+            while(size-->0){
+                Node t= queue.removeFirst();
+
+                if(t.left!=null)
+                queue.addLast(t.left);
+                if(t.right!=null)
+                queue.addLast(t.right);
+            }
+        }
+    }
+
+    public static void extreme(Node root, pair p){
+        LinkedList<TNode>queue= new LinkedList<>();
+        queue.addLast(new TNode(root,p));
+
+        while(queue.size()!=0){
+            int size=queue.size();
+            while(size-->0){
+
+                TNode temp= queue.removeFirst();
+                p.left= Math.min(p.left,temp.p.left);
+                p.right= Math.max(p.right,temp.p.right);
+
+                if(temp.node.left!=null)
+                queue.addLast(new TNode(temp.node.left,new pair(temp.p.left-1,temp.p.right)));
+                if(temp.node.right!=null)
+                queue.addLast(new TNode(temp.node.right,new pair(temp.p.left,temp.p.right+1)));
+                
+            }
+        }
+    }
+    
+    public static class TNode{
+        Node node=null;
+        pair p;
+        TNode(Node node, pair p){
+            this.node=node;
+            this.p=p;
+        }
+    }
+
+    public static class pair{
+        int left=0;
+        int right=0;
+        pair(int left, int right){
+            this.left=left;
+            this.right=right;
+        }
+    }
+
+    //using dfs; -> wrong solution for such cases, only use bfs
+    public static void verticalOrder(Node node, ArrayList<Integer>[]g, int index){
+       if(node==null)
+       return;
+
+        g[index].add(node.data);
+
+        verticalOrder(node.left, g, index-1);
+        verticalOrder(node.right, g, index+1);
+    }
+
+    //using bfs;
+    public static void verticalOrderBFS(Node node, ArrayList<Integer>[]g, int index){  //only using left in pair class.
+        LinkedList<TNode>queue= new LinkedList<>();
+
+        queue.addLast(new TNode(node, new pair(index,0)));
+
+        while(queue.size()!=0){
+            int size=queue.size();
+            while(size-->0){
+                TNode temp= queue.removeFirst();
+
+                g[temp.p.left].add(temp.node.data);
+
+                if(temp.node.left!=null)
+                queue.addLast(new TNode(temp.node.left, new pair(temp.p.left-1,0)));
+                if(temp.node.right!=null)
+                queue.addLast(new TNode(temp.node.right, new pair(temp.p.left+1,0)));
+            }
+        }
+    }
+
     public static void main(String[]args){
         int[]arr=new int[]{10, 20, 40, -1, -1, 50, 80, -1, -1, 90, -1, -1, 30, 60, 100, -1, -1, -1, 70, 110, -1, -1, 120, -1, -1};
         Node root= constructTrees(arr);
@@ -184,6 +300,19 @@ public class prob1{
         // postOrder(root);
         ArrayList<Integer>ar= new ArrayList<>();
         rootToNodePath(root, ar, 100);
-        System.out.println(ar);
+        // System.out.println(ar);
+        // rightView(root);
+        pair p = new pair(0,0);
+        extreme(root, p);
+        System.out.println(p.left+" "+p.right);
+        int range= p.right-p.left;
+        System.out.println("range: "+range);
+        ArrayList<Integer>[]g= new ArrayList[range+1];
+        for(int i=0;i<g.length;i++)
+        g[i]=new ArrayList<Integer>();
+        // verticalOrder(root, g, (p.left)*(-1));
+        verticalOrderBFS(root, g, (p.left)*(-1));
+        for(int i=0;i<g.length;i++)
+        System.out.println(g[i]);
     }
 }
