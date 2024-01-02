@@ -287,32 +287,100 @@ public class prob1{
         }
     }
 
+    //diagonal view
+    public static void diagonalView(Node node, int index, ArrayList<Integer>[]g){
+        if(node==null)
+        return;
+
+        LinkedList<TNode>queue= new LinkedList<>();
+        queue.addLast(new TNode(node, new pair(index,0)));
+
+        while(queue.size()!=0){
+            int size=queue.size();
+            while(size-->0){
+                TNode n= queue.removeFirst();
+
+                g[n.p.left].add(n.node.data);
+
+                if(n.node.left!=null)
+                queue.addLast(new TNode(n.node.left, new pair(n.p.left-1,0)));
+                if(n.node.right!=null)
+                queue.addLast(new TNode(n.node.right, new pair(n.p.left,0)));
+            }
+        }
+    }
+
+    //linearize
+    // public static Node linearize(Node root){
+    //     if(root==null)
+    //     return null;
+
+    //     if(root.left!=null)
+    //     Node left= linearize(root.left);
+    //     if(root.right!=null){
+    //     Node right= linearize(root.right);
+    //     left.left=right;
+    //     root.right=null;
+    //     }
+
+    //     return root;
+    // }
+
+
+
+    //DLL(Doubly Linked List)
+    static Node prev=null;static Node head= null;
+    public static void dll(Node node){
+        if(node==null)
+        return;
+
+        dll(node.left);
+
+        if(head==null){
+            head=node;
+        }
+        else{
+            prev.right= node;
+            node.left= prev;
+        }
+        prev=node;
+
+        dll(node.right);
+    }
+
     public static void main(String[]args){
         int[]arr=new int[]{10, 20, 40, -1, -1, 50, 80, -1, -1, 90, -1, -1, 30, 60, 100, -1, -1, -1, 70, 110, -1, -1, 120, -1, -1};
         Node root= constructTrees(arr);
         // printTreePreorder(root);
         // printLeftRight(root);
-        int size= size(root);
-        int height= height(root);
-        int max= maximum(root);
-        boolean ans= find(root, 101);
+        // int size= size(root);
+        // int height= height(root);
+        // int max= maximum(root);
+        // boolean ans= find(root, 101);
         // System.out.print("Size is :" + ans);
         // postOrder(root);
-        ArrayList<Integer>ar= new ArrayList<>();
-        rootToNodePath(root, ar, 100);
+        // ArrayList<Integer>ar= new ArrayList<>();
+        // rootToNodePath(root, ar, 100);
         // System.out.println(ar);
         // rightView(root);
         pair p = new pair(0,0);
         extreme(root, p);
-        System.out.println(p.left+" "+p.right);
+        // System.out.println(p.left+" "+p.right);
         int range= p.right-p.left;
-        System.out.println("range: "+range);
-        ArrayList<Integer>[]g= new ArrayList[range+1];
+        // System.out.println("range: "+range);
+        ArrayList<Integer>[]g= new ArrayList[p.left*(-1) + 1];
         for(int i=0;i<g.length;i++)
         g[i]=new ArrayList<Integer>();
         // verticalOrder(root, g, (p.left)*(-1));
-        verticalOrderBFS(root, g, (p.left)*(-1));
-        for(int i=0;i<g.length;i++)
-        System.out.println(g[i]);
+        // verticalOrderBFS(root, g, (p.left)*(-1));
+
+        // diagonalView(root, p.left * (-1), g);
+        // for(int i=0;i<g.length;i++)
+        // System.out.println(g[i]);
+        dll(root);
+        while(head!=null){
+        System.out.println(head.data);
+        head=head.right;
+        }
     }
 }
