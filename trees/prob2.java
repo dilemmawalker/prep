@@ -100,15 +100,44 @@ public class prob2{
         return flag;
     }
 
+    public static void predecessorSuccessor(Node node){
+        if(node==null)
+        return;
+
+        Node pre=node;
+        if(node.left!=null){
+            pre=pre.left;
+
+            while(pre.right!=null){
+                pre=pre.right;
+            }
+        }
+
+        Node succ=node;
+        if(node.right!=null){
+            succ=succ.right;
+
+            while(succ.left!=null){
+                succ=succ.left;
+            }
+        }
+
+        System.out.println(pre.val +" "+ succ.val);
+
+        return;
+
+    }
+
     public static void main(String[]args){
         int[]arr=new int[]{10, 20, 30, 40, 50, 60, 70, 80, 90, 100};
         Node root= construct(arr, 0, arr.length-1);
         // System.out.println("node val: "+root.val);
-        // print(root);
+        print(root);
         // boolean flag= find(root, 91);
         ArrayList<Integer>ar=new ArrayList<>();
         // boolean flag= rootToNodePath(root, 90, ar);
-        lca(root, 20, 40);
+        // lca(root, 20, 40);
         // System.out.println(ar);
+        predecessorSuccessor(root);
     }
 }
