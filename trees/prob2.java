@@ -128,16 +128,59 @@ public class prob2{
 
     }
 
+    //construct BST!!!
+    public static int indexPre=0;
+    public static Node constructBSTPreorder(int left, int right, int[]arr){
+        if(indexPre>=arr.length || right<arr[indexPre] || left>arr[indexPre])
+        return null;
+
+        int val= arr[indexPre];
+        Node temp= new Node(val);
+        indexPre++;
+
+        if(val<right && val>left ){
+            
+            temp.left= constructBSTPreorder(left, val, arr);
+        }
+        if(val<right && val>left ){
+            // indexPre++;
+            temp.right= constructBSTPreorder(val, right, arr);
+        }
+
+        return temp;
+    }
+
+    public static int heightBSTPreorder(int left, int right, int[]arr){
+        if(indexPre>=arr.length || right<arr[indexPre] || left>arr[indexPre])
+        return 0;
+
+        int val= arr[indexPre];
+        // Node temp= new Node(val);
+        indexPre++;
+        int height=0;
+            
+            height= Math.max(height,heightBSTPreorder(left, val, arr));
+            height= Math.max(height,heightBSTPreorder(val, right, arr));
+
+        return height+1;
+    }
+
     public static void main(String[]args){
-        int[]arr=new int[]{10, 20, 30, 40, 50, 60, 70, 80, 90, 100};
-        Node root= construct(arr, 0, arr.length-1);
+        // int[]arr=new int[]{10, 20, 30, 40, 50, 60, 70, 80, 90, 100};
+        // Node root= construct(arr, 0, arr.length-1);
         // System.out.println("node val: "+root.val);
-        print(root);
+        // print(root);
         // boolean flag= find(root, 91);
         ArrayList<Integer>ar=new ArrayList<>();
         // boolean flag= rootToNodePath(root, 90, ar);
         // lca(root, 20, 40);
         // System.out.println(ar);
-        predecessorSuccessor(root);
+        // predecessorSuccessor(root);
+        int[]arr=new int[]{50, 17, 9, 14, 12, 23, 19, 76, 54, 72, 67};
+        // Node ans= constructBSTPreorder(Integer.MIN_VALUE, Integer.MAX_VALUE, arr);
+        int h= heightBSTPreorder(Integer.MIN_VALUE, Integer.MAX_VALUE, arr);
+        // print(h);
+        System.out.println(h);
+
     }
 }
