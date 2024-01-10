@@ -128,6 +128,10 @@ public class prob2{
 
     }
 
+
+
+
+
     //construct BST!!!
     public static int indexPre=0;
     public static Node constructBSTPreorder(int left, int right, int[]arr){
@@ -137,15 +141,9 @@ public class prob2{
         int val= arr[indexPre];
         Node temp= new Node(val);
         indexPre++;
-
-        if(val<right && val>left ){
             
             temp.left= constructBSTPreorder(left, val, arr);
-        }
-        if(val<right && val>left ){
-            // indexPre++;
             temp.right= constructBSTPreorder(val, right, arr);
-        }
 
         return temp;
     }
@@ -177,10 +175,10 @@ public class prob2{
         // System.out.println(ar);
         // predecessorSuccessor(root);
         int[]arr=new int[]{50, 17, 9, 14, 12, 23, 19, 76, 54, 72, 67};
-        // Node ans= constructBSTPreorder(Integer.MIN_VALUE, Integer.MAX_VALUE, arr);
-        int h= heightBSTPreorder(Integer.MIN_VALUE, Integer.MAX_VALUE, arr);
-        // print(h);
-        System.out.println(h);
+        Node ans= constructBSTPreorder(Integer.MIN_VALUE, Integer.MAX_VALUE, arr);
+        // int h= heightBSTPreorder(Integer.MIN_VALUE, Integer.MAX_VALUE, arr);
+        print(ans);
+        // System.out.println(h);
 
     }
 }
