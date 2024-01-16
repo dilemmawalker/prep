@@ -280,4 +280,131 @@ public ListNode middleNode(ListNode head) {
 
         return original;
     }
+
+    //  148. Sort List
+
+    public ListNode sortList(ListNode head) {
+        return solution(head);
+    }
+    public ListNode solution(ListNode head){
+        if(head==null || head.next==null)
+        return head;
+
+        ListNode s=head,f=head;
+        while(f!=null && f.next!=null && f.next.next!=null){
+            s=s.next;
+            f=f.next.next;
+        }
+
+        ListNode nHead=s.next;
+        s.next=null;
+
+        return merge(solution(head),solution(nHead));
+    }
+    public ListNode merge(ListNode head1, ListNode head2){
+        ListNode head=new ListNode(-1);
+        ListNode temp=head;
+        while(head1!=null && head2!=null){
+            if(head1.val<=head2.val){
+                head.next=head1;
+                head1=head1.next;
+            }
+            else{
+                head.next=head2;
+                head2=head2.next;
+            }
+            head=head.next;
+        }
+        if(head1!=null)
+        head.next=head1;
+        else
+        head.next=head2;
+
+        return temp.next;
+    }
+
+    // 25. Reverse Nodes in k-Group
+
+    public ListNode reverseKGroup(ListNode head, int k) {
+        ListNode oHead=null, oTail=null, ans=null;;
+        while(head!=null){
+            int copy=k;
+            ListNode tHead=null,prev=null;
+            oHead=null;
+            prev=null;
+            while(copy>0 && head!=null){
+                if(prev==null)
+                prev=head;
+
+                ListNode temp= head.next;
+                tHead= removeFirst(head);
+                oHead= addFirst(oHead, tHead);
+
+                System.out.println("tHead val: "+tHead.val);
+                System.out.println("oHead val: "+oHead.val);
+
+                copy--;
+                head=temp;
+            }
+
+            if(ans==null){
+                ans=oHead;
+            }
+
+            if(oTail==null){
+                oTail=prev;    
+            }
+            else{
+                if(head==null && copy>0){
+                    
+                oTail.next=reverse(oHead);
+                ListNode t=oTail.next;
+                
+                }
+                else{
+                oTail.next= oHead;
+                oTail=prev;
+                }
+            }
+
+        }
+
+        return ans;
+    }
+    public ListNode removeFirst(ListNode head){
+        if(head==null || head.next==null){
+            return head;
+        }
+
+        ListNode temp=head;
+        head=head.next;
+        temp.next=null;
+        return temp;
+    }
+
+    public ListNode addFirst(ListNode head, ListNode node){
+        node.next=head;
+        // head=node;
+        return node;
+    }
+
+    public ListNode reverse(ListNode head){
+        if(head==null || head.next==null)
+        return head;
+
+        ListNode prev=head, curr=head.next, next=curr.next;
+
+        while(next!=null){
+            if(prev==head)
+            prev.next=null;
+            curr.next=prev;
+            prev=curr;
+            curr=next;
+            next=next.next;
+        }
+        if(prev==head)
+        prev.next=null;
+        curr.next=prev;
+        return curr;
+    }
 }
