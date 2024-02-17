@@ -16,7 +16,7 @@ public class prob1{
     }
 
     public static void main(String[]args){
-        int n=4000;
+        int n=600;
         int[]dp=new int[n+1];
         for(int i=0;i<=n;i++)
         dp[i]=-1;
