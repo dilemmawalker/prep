@@ -113,6 +113,10 @@ public class prob1{
         return Math.min(value, arr[vidx]);
     }
 
+
+  //  ================================================================================================================
+
+
     public static ArrayList<String> subsequence_return(String str, int vidx){
         if(vidx == str.length()){
             ArrayList<String> temp = new ArrayList<>();
@@ -148,6 +152,54 @@ public class prob1{
         subsequence_void(str, vidx+1, ans, tans);
     }
 
+    //permutation with repetition allowed
+    public static ArrayList<String> permutation_withduplication(String str, int idx){
+        if(idx == str.length()-1){
+            ArrayList<String> temp = new ArrayList<>();
+            temp.add(str.charAt(idx)+"");
+            return temp;
+        }
+
+        ArrayList<String> ans = new ArrayList<>();
+        ArrayList<String> temp = permutation_withduplication(str, idx+1);
+        // System.out.println(temp);
+        for(String s: temp){
+            for(int i=0;i<=s.length();i++){
+                String start = s.substring(0,i);
+                String end = s.substring(i);
+
+                ans.add(start + "" + str.charAt(idx) + "" + end);
+            }
+        }
+
+        return ans;
+    }
+
+    public static int permutation_without_duplication(String str, ArrayList<String>ans, String tans){
+        if(str.length()==0){
+            ans.add(tans);
+            return 1;
+        }
+
+        int count = 0;
+        boolean[]arr = new boolean[26];
+        
+        for(int i=0;i<str.length();i++){
+            char ch = str.charAt(i);
+            int val = ch-'a';
+
+            if(arr[val])
+            continue;
+
+            arr[val]=true;
+            count += permutation_without_duplication(str.substring(0,i) + str.substring(i+1), ans, tans+ch+"");
+            // arr[val]=false;
+        }
+
+        return count;
+
+    }
+
     public static void main(String[]args){
 //        printIncreasing(1,10);
 //        printDecreasing(1,10);
@@ -156,14 +208,16 @@ public class prob1{
 //        System.out.println(factorial2(4));
 //        System.out.println(power(10,5));
 //        System.out.println(power2(2,5));
-        int[]arr = {4, 5, 10, 15, 6, 8, 3};
+        // int[]arr = {4, 5, 10, 15, 6, 8, 3};
 //        System.out.println(find(15, arr, 0));
 //        System.out.println(maximum(arr, 0));
         // System.out.println(minimum(arr, 0));
         ArrayList<String>ans = new ArrayList<>();
         // for(String a: ans)
         // System.out.println(a);
-        subsequence_void("abc", 0, ans, "");
+        // subsequence_void("abc", 0, ans, "");
+        // System.out.println(permutation_withduplication("abc", 0));
+        System.out.println(permutation_without_duplication("aba", ans, ""));
         System.out.println(ans);
     }
 }
