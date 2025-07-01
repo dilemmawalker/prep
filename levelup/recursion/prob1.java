@@ -1,3 +1,4 @@
+import java.util.ArrayList;
 import java.util.Scanner;
 
 public class prob1{
@@ -112,6 +113,41 @@ public class prob1{
         return Math.min(value, arr[vidx]);
     }
 
+    public static ArrayList<String> subsequence_return(String str, int vidx){
+        if(vidx == str.length()){
+            ArrayList<String> temp = new ArrayList<>();
+            temp.add("");
+            return temp;
+        }
+
+        ArrayList<String>ans = new ArrayList<>();
+        ArrayList<String> temp = subsequence_return(str, vidx+1);
+
+        // System.out.println(temp);
+
+        char ch = str.charAt(vidx);
+        for(String s: temp){
+            ans.add(ch+""+s+"");
+        }
+        for(String s: temp){
+            ans.add(s);
+        }
+        // System.out.println("hello");
+
+        return ans;
+        
+    }
+
+    public static void subsequence_void(String str, int vidx, ArrayList<String> ans, String tans){
+        if(vidx == str.length()){
+            ans.add(tans);
+            return;
+        }
+
+        subsequence_void(str, vidx+1, ans, tans+str.charAt(vidx));
+        subsequence_void(str, vidx+1, ans, tans);
+    }
+
     public static void main(String[]args){
 //        printIncreasing(1,10);
 //        printDecreasing(1,10);
@@ -123,6 +159,11 @@ public class prob1{
         int[]arr = {4, 5, 10, 15, 6, 8, 3};
 //        System.out.println(find(15, arr, 0));
 //        System.out.println(maximum(arr, 0));
-        System.out.println(minimum(arr, 0));
+        // System.out.println(minimum(arr, 0));
+        ArrayList<String>ans = new ArrayList<>();
+        // for(String a: ans)
+        // System.out.println(a);
+        subsequence_void("abc", 0, ans, "");
+        System.out.println(ans);
     }
 }
