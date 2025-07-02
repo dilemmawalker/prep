@@ -1,5 +1,6 @@
 import java.util.ArrayList;
 import java.util.Scanner;
+import java.util.HashMap;
 
 public class prob1{
 
@@ -200,6 +201,85 @@ public class prob1{
 
     }
 
+    public static HashMap<Integer,String> getMapForKeypad(){
+        HashMap<Integer, String> map = new HashMap<>();
+
+        map.put(1, "abc");
+        map.put(2, "def");
+        map.put(3, "ghk");
+        map.put(11, "uvw");
+        map.put(10, "xyz");
+
+        return map;
+    }
+
+    public static int keypad_void(String no, String ans, int vidx, HashMap<Integer,String>map){
+        if(vidx == no.length()){
+            System.out.println(ans);
+            return 1;
+        }
+
+        int count=0;
+        String str = map.get(no.charAt(vidx)-'0');
+        for(int i=0;i<str.length();i++){
+            char ch = str.charAt(i);
+
+            count+=keypad_void(no, ans+""+ch, vidx+1, map);
+
+        }
+
+        if(no.charAt(vidx)=='1' && vidx+1<no.length() && (no.charAt(vidx+1)=='0'||no.charAt(vidx+1)=='1')){
+            String ss = map.get(10+(no.charAt(vidx+1)-'0'));
+            for(int i=0;i<ss.length();i++){
+                char ch = ss.charAt(i);
+
+                 count+=keypad_void(no, ans+""+ch, vidx+1, map);
+            }
+        }
+
+        return count;
+        
+    }
+
+    public static ArrayList<String> keypad_return(String no, int idx, HashMap<Integer, String>map){
+        if(idx>=no.length()){
+            ArrayList<String> temp = new ArrayList<>();
+            temp.add("");
+            return temp;
+        }
+
+        ArrayList<String>ans = new ArrayList<>();
+        int ch = no.charAt(idx)-'0';
+        String str = map.get(ch);
+
+        ArrayList<String> temp = keypad_return(no, idx+1, map);
+        if(ch==1 && idx+1<no.length() && (no.charAt(idx+1)=='0' || no.charAt(idx+1)=='1')){
+            // System.out.println("coming in 2nd case");
+            ArrayList<String> temp2 = keypad_return(no, idx+2, map);
+
+            int ch2 = 10+(no.charAt(idx+1) - '0');
+            // System.out.println("coming in 2nd case: " + ch2);
+            String str2 = map.get(ch2);
+
+            for(int i=0;i<str2.length();i++){
+                char tempCh = str2.charAt(i);
+                for(String s: temp2){
+                    ans.add(tempCh + ""+s);
+            }
+        }
+        }
+
+        for(int i=0;i<str.length();i++){
+            char tempCh = str.charAt(i);
+            for(String s: temp){
+                ans.add(tempCh+""+s);
+            }
+        }
+
+        return ans;
+        
+    }
+
     public static void main(String[]args){
 //        printIncreasing(1,10);
 //        printDecreasing(1,10);
@@ -212,12 +292,15 @@ public class prob1{
 //        System.out.println(find(15, arr, 0));
 //        System.out.println(maximum(arr, 0));
         // System.out.println(minimum(arr, 0));
-        ArrayList<String>ans = new ArrayList<>();
+        // ArrayList<String>ans = new ArrayList<>();
         // for(String a: ans)
         // System.out.println(a);
         // subsequence_void("abc", 0, ans, "");
         // System.out.println(permutation_withduplication("abc", 0));
-        System.out.println(permutation_without_duplication("aba", ans, ""));
-        System.out.println(ans);
+        // System.out.println(permutation_without_duplication("aba", ans, ""));
+        HashMap<Integer,String>map = getMapForKeypad();
+        // System.out.println(keypad_void("1123", "", 0, map));
+        System.out.println(keypad_return("1123", 0, map));
+        // System.out.println(ans);
     }
 }
