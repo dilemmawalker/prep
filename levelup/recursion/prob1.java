@@ -299,6 +299,57 @@ public class prob1{
         }
     }
 
+    public static void permutation_multi_coin(int[]arr, int target, int idx, String ans){
+        if(target == 0){
+            System.out.println(ans);
+            return;
+        }
+
+        if(idx == arr.length){
+            return;
+        }
+
+
+        for(int i=0; i<arr.length; i++){
+            int val = arr[i];
+            if(target-val >=0){
+                permutation_multi_coin(arr, target-val, i, ans+" "+val);
+            }
+        }
+    }
+
+    public static void permutation_single_coin(int[]arr, int target, String ans, boolean[]check){
+        if(target == 0){
+            System.out.println(ans);
+            return;
+        }
+
+        
+        for(int i=0; i<arr.length; i++){
+            int val = arr[i];
+            if(target-val >= 0 && !check[i]){
+                check[i]=true;
+                permutation_single_coin(arr, target-val, ans+" "+val, check);
+                check[i]=false;
+            }
+        }
+    }
+
+    public static void combination_single_coin(int[]arr, int target, String ans, int idx){
+        if(target == 0){
+            System.out.println(ans);
+            return;
+        }
+
+        for(int i=idx; i<arr.length; i++){
+            int val = arr[i];
+
+            if(target-val >=0)
+            combination_single_coin(arr, target-val, ans+" "+val, i+1);
+            
+        }
+    }
+
     public static void main(String[]args){
 //        printIncreasing(1,10);
 //        printDecreasing(1,10);
@@ -321,7 +372,9 @@ public class prob1{
         // System.out.println(keypad_void("1123", "", 0, map));
         // System.out.println(keypad_return("1123", 0, map));
         // System.out.println(ans);
-        int[]arr = {2,3, 5, 7};
-        combination_multi_coin(arr, 10, 0, "");
+        int[]arr = {2, 3, 5, 7};
+        // permutation_multi_coin(arr, 10, 0, "");
+        // permutation_single_coin(arr, 10, "", new boolean[arr.length]);
+        combination_single_coin(arr, 10, "", 0);
     }
 }
