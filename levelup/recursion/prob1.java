@@ -338,7 +338,7 @@ public class prob1{
     public static void combination_single_coin(int[]arr, int target, String ans, int idx){
         if(target == 0){
             System.out.println(ans);
-            return;
+            return;     
         }
 
         for(int i=idx; i<arr.length; i++){
@@ -348,6 +348,36 @@ public class prob1{
             combination_single_coin(arr, target-val, ans+" "+val, i+1);
             
         }
+    }
+
+    public static int three_queen_1D(int no, String ans, int start, int end){
+        if(no==0){
+            System.out.println(ans);
+            return 1;
+        }
+
+        int count=0;
+        for(int i=start; i<end; i++){
+            count+= three_queen_1D(no-1, ans+" "+i, i+1, end);
+        }
+
+        return count;
+    }
+
+    public static int three_queen_1D_subseq(int no, String ans, int start, int end){
+        if(no==0){
+            System.out.println(ans);
+            return 1;
+        }
+        if(start == end)
+        return 0;
+
+        int count = 0;
+        
+        count+=three_queen_1D_subseq(no-1, ans+" "+start, start+1, end);
+        count+=three_queen_1D_subseq(no, ans, start+1, end);
+
+        return count;
     }
 
     public static void main(String[]args){
@@ -372,9 +402,11 @@ public class prob1{
         // System.out.println(keypad_void("1123", "", 0, map));
         // System.out.println(keypad_return("1123", 0, map));
         // System.out.println(ans);
-        int[]arr = {2, 3, 5, 7};
+        // int[]arr = {2, 3, 5, 7};
         // permutation_multi_coin(arr, 10, 0, "");
         // permutation_single_coin(arr, 10, "", new boolean[arr.length]);
-        combination_single_coin(arr, 10, "", 0);
+        // combination_single_coin(arr, 10, "", 0);
+        // three_queen_1D(3, "", 0, 5);
+        three_queen_1D_subseq(3 ,"", 0, 5);
     }
 }
