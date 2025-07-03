@@ -279,6 +279,7 @@ public class prob1{
         return ans;
         
     }
+    //check working
 
     public static void main(String[]args){
 //        printIncreasing(1,10);
