@@ -279,7 +279,25 @@ public class prob1{
         return ans;
         
     }
-    //check working
+    
+    public static void combination_multi_coin(int[]arr, int target, int idx, String ans){
+        if(target == 0){
+            System.out.println(ans);
+            return;
+        }
+
+        if(idx == arr.length){
+            return;
+        }
+
+
+        for(int i=idx; i<arr.length; i++){
+            int val = arr[i];
+            if(target-val >=0){
+                combination_multi_coin(arr, target-val, i, ans+" "+val);
+            }
+        }
+    }
 
     public static void main(String[]args){
 //        printIncreasing(1,10);
@@ -299,9 +317,11 @@ public class prob1{
         // subsequence_void("abc", 0, ans, "");
         // System.out.println(permutation_withduplication("abc", 0));
         // System.out.println(permutation_without_duplication("aba", ans, ""));
-        HashMap<Integer,String>map = getMapForKeypad();
+        // HashMap<Integer,String>map = getMapForKeypad();
         // System.out.println(keypad_void("1123", "", 0, map));
-        System.out.println(keypad_return("1123", 0, map));
+        // System.out.println(keypad_return("1123", 0, map));
         // System.out.println(ans);
+        int[]arr = {2,3, 5, 7};
+        combination_multi_coin(arr, 10, 0, "");
     }
 }
