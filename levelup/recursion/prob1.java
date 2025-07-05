@@ -380,6 +380,26 @@ public class prob1{
         return count;
     }
 
+    public static int three_queen_2D(int no, String ans, int start, int end, int row, int col, int qplaced){
+        if(qplaced == no){
+            System.out.println(ans);
+            return 1;
+        }
+
+        if(start == end){
+            return 0;
+        }
+
+
+        int count = 0;
+        for(int i=start; i<end; i++){
+            count+=three_queen_2D(no, ans, i+1, end, row, col, qplaced);
+            count+=three_queen_2D(no, ans+" queen:"+qplaced+" pointer:"+(i/col)+" "+(i%col), i+1, end, row, col, qplaced+1);
+        }
+
+        return count;
+    }
+
     public static void main(String[]args){
 //        printIncreasing(1,10);
 //        printDecreasing(1,10);
@@ -407,6 +427,10 @@ public class prob1{
         // permutation_single_coin(arr, 10, "", new boolean[arr.length]);
         // combination_single_coin(arr, 10, "", 0);
         // three_queen_1D(3, "", 0, 5);
-        three_queen_1D_subseq(3 ,"", 0, 5);
+        // three_queen_1D_subseq(3 ,"", 0, 5);
+
+        int row= 3, col=3;
+        int count = three_queen_2D(3, "", 0, row*col, row, col, 0);
+        System.out.println(count);
     }
 }
