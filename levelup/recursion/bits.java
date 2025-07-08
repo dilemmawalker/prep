@@ -66,7 +66,7 @@ public class bits{
 
 
     public static void main(String args[]){
-        int no = 122;
+        int no = 122; 
         // System.out.println("Initial no: "+ no);
         // System.out.println(finalOn(no, 2));
         // System.out.println(finalOff(no, 4));
