@@ -91,7 +91,70 @@ public class prob5{
         }
     }
 
+    public static boolean isSafeToPlace(boolean[][]check, int row, int col){
+        int n = check.length;
+        int m = check[0].length;
+        if(row >=0 && col >=0 && row<n && col<m && !check[row][col])
+        return true;
+        return false;
+    }
+
+    public static int mazepath_maxpath(int sr, int sc, int er, int ec, boolean[][]check, int ans, int[][]dir){
+        if(sr == er-1 && sc == ec-1){
+            return ans;
+        }
+        // if(sr > er || sc > ec){
+        //     return 0;
+        // }
+
+        check[sr][sc]=true;
+
+        int val = 0;
+        for(int i=0; i<8; i++){
+            int row = dir[i][0];
+            int col = dir[i][1];
+
+            int nrow = row + sr;
+            int ncol = col + sc;
+            if(isSafeToPlace(check, nrow, ncol)){
+                check[nrow][ncol]=true;
+                val = Math.max(val, mazepath_maxpath(nrow, ncol, er, ec, check, ans+1, dir));
+                check[nrow][ncol]=false;
+            }
+        }
+        return val;
+    }
+
+    public static int mazepath_minpath(int sr, int sc, int er, int ec, boolean[][]check, int ans, int[][]dir){
+        if(sr == er-1 && sc == ec-1){
+            return ans;
+        }
+        // if(sr > er || sc > ec){
+        //     return 0;
+        // }
+
+        check[sr][sc]=true;
+
+        int val = Integer.MAX_VALUE;
+        for(int i=0; i<8; i++){
+            int row = dir[i][0];
+            int col = dir[i][1];
+
+            int nrow = row + sr;
+            int ncol = col + sc;
+            if(isSafeToPlace(check, nrow, ncol)){
+                check[nrow][ncol]=true;
+                val = Math.min(val, mazepath_maxpath(nrow, ncol, er, ec, check, ans+1, dir));
+                check[nrow][ncol]=false;
+            }
+        }
+        return val;
+    }
+
     public static void main(String[]args){
-        System.out.println(mazepath_2d_4dir(0, 0, 4, 4, "", new boolean[4][4]));
+        // System.out.println(mazepath_2d_4dir(0, 0, 4, 4, "", new boolean[4][4]));
+        int[][]dir = {{0,1}, {1,0}, {0,-1}, {-1,0}, {1,1}, {-1,-1}, {1,-1}, {-1,1}};
+        int val = mazepath_minpath(0, 0, 4, 4, new boolean[4][4], 0, dir);
+        System.out.println(val);
     }
 }
