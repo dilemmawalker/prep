@@ -24,6 +24,30 @@ public class prob1{
         graph[v2].add(new Edge(v1, w));
     }
 
+    public static void removeSingleEdge(ArrayList<Edge>[]graph, int v1, int v2){
+        ArrayList<Edge>temp = graph[v1];
+        for(int i=0; i<temp.size(); i++){
+            Edge e = temp.get(i);
+            if(e.v == v2){
+                temp.remove(i);
+                break;
+            }
+        }
+    }
+
+    public static void removeEdge(ArrayList<Edge>[]graph, int v1, int v2){
+        removeSingleEdge(graph, v1, v2);
+        removeSingleEdge(graph, v2, v1);
+    }
+
+    public static void removeNode(ArrayList<Edge>[]graph, int v){
+        for(int i=0; i<graph[v].size(); i++){
+            Edge e = graph[v].get(i);
+            removeSingleEdge(graph, e.v, v);
+        }
+        graph[v]= new ArrayList<Edge>();
+    }
+
     public static void constructGraph(ArrayList<Edge>[]graph){
         initialize(graph);
 
@@ -45,7 +69,7 @@ public class prob1{
             System.out.print(i+" -> ");
             for(int j=0; j<size; j++){
                 Edge edge = al.get(j);
-                System.out.print(edge.v+": "+edge.w+", ");
+                System.out.print("("+ edge.v+": "+edge.w+"), ");
             }
             System.out.println();
         }
@@ -55,6 +79,8 @@ public class prob1{
         int n = 7;
         ArrayList<Edge>[]graph = new ArrayList[n];
         constructGraph(graph);
+        // removeEdge(graph, 3, 4);
+        removeNode(graph, 1);
         printGraph(graph);
     }
 }
