@@ -75,12 +75,82 @@ public class prob1{
         }
     }
 
+    //====================================DFS=============================================================
+
+    public static String hasPath(ArrayList<Edge>[]graph, int start, int dest, boolean[]check){
+
+        if(start == dest){
+            return start+"";
+        }
+
+        check[start] = true;
+        ArrayList<Edge>al = graph[start];
+        String ans = "";
+        for(int i=0; i<al.size(); i++){
+            int v = al.get(i).v;
+            if(!check[v]){
+                ans =  hasPath(graph, v, dest, check) +" "+ start;
+            }
+        }
+
+        //not marking false -> we don't need all paths, rather just get any path.
+
+        return ans;
+    }
+
+    public static int allPath(ArrayList<Edge>[]graph, int start, int dest, boolean[]check, String ans, int sum){
+
+        if(start == dest){
+            System.out.println(ans+" "+start + " @ "+sum);
+            return 1;
+        }
+
+        check[start] = true;
+        ArrayList<Edge>al = graph[start];
+        int count = 0;
+        for(int i=0; i<al.size(); i++){
+            int v = al.get(i).v;
+            if(!check[v]){
+                count +=  allPath(graph, v, dest, check, ans + " " + start, sum+al.get(i).w);
+            }
+        }
+
+        check[start]=false;
+
+        return count;
+    }
+
+    public static int ceil(ArrayList<Edge>[]graph, int start, int dest, boolean[]check, String ans, int sum, int weight){//solve through pair class by storing all weights of paths against ans.
+
+        if(start == dest){
+            System.out.println(ans+" "+start + " @ "+sum);
+            return sum;
+        }
+
+        check[start] = true;
+        ArrayList<Edge>al = graph[start];
+        int count = 0;
+        for(int i=0; i<al.size(); i++){
+            int v = al.get(i).v;
+            if(!check[v]){
+                count +=  allPath(graph, v, dest, check, ans + " " + start, sum+al.get(i).w);
+            }
+        }
+
+        check[start]=false;
+
+        return count;
+    }
+
     public static void main(String[]args){
         int n = 7;
         ArrayList<Edge>[]graph = new ArrayList[n];
         constructGraph(graph);
         // removeEdge(graph, 3, 4);
-        removeNode(graph, 1);
-        printGraph(graph);
+        // removeNode(graph, 1);
+        // printGraph(graph);
+        // String ans = hasPath(graph, 0, 5, new boolean[n]);
+        System.out.println(allPath(graph, 0, 5, new boolean[n],"",0));
+        // System.out.println(ans.rever);
     }
 }
