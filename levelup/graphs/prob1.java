@@ -55,11 +55,11 @@ public class prob1{
         addEdge(graph, 0, 3, 10);
         addEdge(graph, 1, 2, 10);
         addEdge(graph, 2, 3, 40);
-        addEdge(graph, 3, 4, 2);
+        // addEdge(graph, 3, 4, 2);
         addEdge(graph, 4, 5, 2);
         addEdge(graph, 4, 6, 3);
         addEdge(graph, 5, 6, 8);
-        addEdge(graph, 2, 5, 2);
+        // addEdge(graph, 2, 5, 2);
     }
 
     public static void printGraph(ArrayList<Edge>[]graph){
@@ -167,6 +167,39 @@ public class prob1{
         return count;
     }
 
+    //leetcode : 130 -> Surrounded Regions
+    //TBD
+
+
+
+    public static void gcc(ArrayList<Edge>[]graph, int start, String ans, boolean[]check){
+
+        System.out.print(start+" ");
+
+        check[start]=true;
+
+        for(Edge edge: graph[start]){
+            if(!check[edge.v]){
+                gcc(graph, edge.v, ans+" "+edge.v, check);
+            }
+        }
+        
+        return;
+    }
+
+    public static int find_gcc(ArrayList<Edge>[]graph, int start, String ans, boolean[]check){
+        int count = 0;
+
+        for(int i=start; i<graph.length; i++){
+            if(!check[i]){
+                count++;
+                gcc(graph, i, "", check);
+                System.out.println();
+            }
+        }
+        return count;
+    }
+
     public static void main(String[]args){
         int n = 7;
         ArrayList<Edge>[]graph = new ArrayList[n];
@@ -177,7 +210,10 @@ public class prob1{
         // String ans = hasPath(graph, 0, 5, new boolean[n]);
         // System.out.println(allPath(graph, 0, 5, new boolean[n],"",0));
         // System.out.println(ans.rever);
-        int hamiltonianGraphsCount = countOfHamiltonianCycles(graph, 0, 0, new boolean[n], "");
-        System.out.println("count of hamiltonian graphs: "+ hamiltonianGraphsCount);
+        // int hamiltonianGraphsCount = countOfHamiltonianCycles(graph, 0, 0, new boolean[n], "");
+        // System.out.println("count of hamiltonian graphs: "+ hamiltonianGraphsCount);
+
+        int val=find_gcc(graph, 0, "", new boolean[n]);
+        System.out.println("count of gcc: "+ val);
     }
 }
