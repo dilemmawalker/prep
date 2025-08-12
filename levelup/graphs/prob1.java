@@ -59,6 +59,7 @@ public class prob1{
         addEdge(graph, 4, 5, 2);
         addEdge(graph, 4, 6, 3);
         addEdge(graph, 5, 6, 8);
+        addEdge(graph, 2, 5, 2);
     }
 
     public static void printGraph(ArrayList<Edge>[]graph){
@@ -142,6 +143,30 @@ public class prob1{
         return count;
     }
 
+    public static int countOfHamiltonianCycles(ArrayList<Edge>[]graph, int start, int ostart, boolean[]check, String ans){
+        if(check[start]){
+            if(start == ostart){
+                //hamiltonian edge
+                System.out.println(ans);
+               return 1;
+            }
+            return 0;
+        }
+
+        check[start]=true;
+        int count = 0;
+        for(Edge edge: graph[start]){
+            // if(check[edge.v])
+            // continue;
+
+        
+        count += countOfHamiltonianCycles(graph, edge.v, ostart, check, ans+" "+edge.v);
+        }
+        check[start]=false;
+
+        return count;
+    }
+
     public static void main(String[]args){
         int n = 7;
         ArrayList<Edge>[]graph = new ArrayList[n];
@@ -150,7 +175,9 @@ public class prob1{
         // removeNode(graph, 1);
         // printGraph(graph);
         // String ans = hasPath(graph, 0, 5, new boolean[n]);
-        System.out.println(allPath(graph, 0, 5, new boolean[n],"",0));
+        // System.out.println(allPath(graph, 0, 5, new boolean[n],"",0));
         // System.out.println(ans.rever);
+        int hamiltonianGraphsCount = countOfHamiltonianCycles(graph, 0, 0, new boolean[n], "");
+        System.out.println("count of hamiltonian graphs: "+ hamiltonianGraphsCount);
     }
 }
