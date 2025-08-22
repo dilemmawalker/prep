@@ -133,6 +133,10 @@ public class prob3{
 
     //============================leetcode 839========================
 
+    //============================hackerearth mr.president========================
+
+    //============================hackerearth journey to Moon========================
+
     public static void main(String[]args){
         int n = 7;
         parent = new int[n];
