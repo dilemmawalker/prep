@@ -131,6 +131,8 @@ public class prob3{
 
     //============================leetcode 1061========================
 
+    //============================leetcode 839========================
+
     public static void main(String[]args){
         int n = 7;
         parent = new int[n];
