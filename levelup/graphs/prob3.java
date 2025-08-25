@@ -137,6 +137,8 @@ public class prob3{
 
     //============================hackerearth journey to Moon========================
 
+    //============================dijkstra========================
+
     public static void main(String[]args){
         int n = 7;
         parent = new int[n];
