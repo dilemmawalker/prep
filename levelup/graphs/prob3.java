@@ -139,6 +139,12 @@ public class prob3{
 
     //============================dijkstra========================
 
+    //============================bellman-ford========================
+
+    //============================articulation point========================
+
+    //============================articulation bridge ========================
+
     public static void main(String[]args){
         int n = 7;
         parent = new int[n];
